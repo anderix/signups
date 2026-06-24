@@ -1,0 +1,4 @@
+# The database is per-install state, never committed.
+db/*.db
+db/*.db-wal
+db/*.db-shm

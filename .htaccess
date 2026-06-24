@@ -1,0 +1,14 @@
+# Never serve a SQLite database, even if one lands at the web root.
+<FilesMatch "\.db(-wal|-shm)?$">
+    Require all denied
+</FilesMatch>
+
+RewriteEngine On
+
+# Application internals are reachable only through index.php. Unlike a public
+# wiki, signups has no public artifacts — every page is rendered behind the
+# login by the front controller.
+RewriteRule ^src/        - [F,L]
+RewriteRule ^templates/  - [F,L]
+RewriteRule ^db/         - [F,L]
+RewriteRule ^config\.php$ - [F,L]

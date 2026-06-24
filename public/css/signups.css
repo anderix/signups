@@ -1,0 +1,151 @@
+/* signups — a thin layer over Axe.
+   Axe (default.css + the site's brand.css + axe.css) supplies the palette,
+   typography, dark/light theming, and base styling for nav, tables, forms,
+   buttons, and the .theme-toggle, .ghost, and .tag helpers. Everything here is
+   signups-specific structure, and every colour is an Axe token so the sun/moon
+   switch carries the whole UI between light and dark.
+
+   Built with AI assistance (Claude, Anthropic). */
+
+/* --- Layout wrappers (main is already padded by Axe) --- */
+main.content { max-width: 980px; margin-inline: auto; }
+main.gate    { max-width: 440px; margin: 5vh auto; }
+
+.page-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+}
+.page-head h1 { margin: 0; }
+.head-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+.muted { color: var(--color-text-muted); }
+
+/* --- Nav extras (Axe paints the bar; these tune our items) --- */
+.nav-brand { font-weight: 700; }
+nav ul li a.active { font-weight: 700; text-decoration: underline; }
+nav .who-name { color: var(--color-nav-text); font-size: 0.9rem; opacity: 0.85; }
+.gate-toggle { position: fixed; top: 1rem; right: 1rem; z-index: var(--z-sticky); }
+
+/* --- Card surface (gates, new-sheet, add-user) --- */
+.card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.card > h1:first-child, .card > h2:first-child { margin-top: 0; }
+
+/* --- Forms --- */
+.form-actions { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem; }
+.hint { font-weight: 400; color: var(--color-text-muted); }
+
+/* Inline text-buttons inside rows: reset Axe's solid button to a link. */
+.link, .link-danger {
+    background: none; border: none; padding: 0; width: auto;
+    font: inherit; cursor: pointer;
+}
+.link { color: var(--color-accent); }
+.link:hover { color: var(--color-accent-hover); text-decoration: underline; background: none; }
+.link-danger { color: var(--color-danger); }
+.link-danger:hover { text-decoration: underline; background: none; }
+.inline { display: inline; }
+
+/* --- Sheet list cards (Axe .grid supplies the card frame) --- */
+.sheet-title { margin: 0 0 0.35rem; }
+.sheet-meta { color: var(--color-text-muted); font-size: 0.9rem; }
+
+/* --- A single sheet: two side-by-side lists --- */
+.sheet-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+@media (max-width: 720px) { .sheet-cols { grid-template-columns: 1fr; } }
+
+.list-col {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+}
+.list-col h2 { margin-top: 0; display: flex; align-items: baseline; gap: 0.5rem; }
+.list-col .count { font-size: 0.85rem; font-weight: 400; color: var(--color-text-muted); }
+
+/* The people in a list. Each row is a name and its controls. */
+.people { list-style: none; margin: 0 0 1rem; padding: 0; }
+.people li {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.45rem 0; border-bottom: 1px solid var(--color-border);
+}
+.people li:last-child { border-bottom: none; }
+.people .who { flex: 1; }
+.people .empty { color: var(--color-text-muted); font-style: italic; padding: 0.45rem 0; }
+
+/* Driving checkbox sits inline; the row width is reset from Axe's full-width input. */
+.drive { display: inline-flex; align-items: center; gap: 0.35rem; margin: 0; font-weight: 400; font-size: 0.85rem; white-space: nowrap; }
+.drive input { width: auto; margin: 0; }
+
+/* The remove (✕) control, a quiet danger link until hovered. */
+.x-btn {
+    background: none; border: none; cursor: pointer; width: auto;
+    color: var(--color-text-muted); font-size: 1rem; line-height: 1; padding: 0.15rem 0.35rem;
+}
+.x-btn:hover { color: var(--color-danger); background: none; }
+
+/* The add-a-name row at the bottom of each list. */
+.add-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.add-row input[type="text"] { flex: 1; min-width: 8rem; }
+.add-row .drive { flex-basis: 100%; }
+
+/* --- Listing table (Axe styles th/td; this frames them as a card) --- */
+table.list {
+    width: 100%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+.list .actions { text-align: right; white-space: nowrap; }
+.list .actions form { display: inline; margin-left: 0.85rem; }
+
+/* --- One-time credential callout (highlight/warning tone) --- */
+.credential {
+    background: color-mix(in srgb, var(--color-warning) 12%, var(--color-surface));
+    border: 1px solid color-mix(in srgb, var(--color-warning) 45%, var(--color-border));
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;
+}
+.credential h2 { margin-top: 0; }
+.cred-grid { display: grid; grid-template-columns: max-content 1fr; gap: 0.4rem 1.25rem; margin: 0; }
+.cred-grid dt { color: var(--color-text-muted); }
+.cred-grid dd { margin: 0; }
+.temp-pw { font-size: 1.05rem; }
+
+/* --- Flash messages (Axe status tokens) --- */
+.flash { padding: 0.7rem 0.9rem; border-radius: var(--radius); margin-bottom: 1rem; border: 1px solid transparent; }
+.flash-success {
+    background: color-mix(in srgb, var(--color-success) 14%, var(--color-surface));
+    border-color: color-mix(in srgb, var(--color-success) 40%, transparent);
+}
+.flash-error {
+    background: color-mix(in srgb, var(--color-danger) 14%, var(--color-surface));
+    border-color: color-mix(in srgb, var(--color-danger) 40%, transparent);
+}
+
+/* --- Print view: a clean roster to carry to camp --- */
+.print-sheet { max-width: 760px; margin: 1.5rem auto; padding: 0 1rem; }
+.print-sheet h1 { margin-bottom: 0.25rem; }
+.print-sheet .print-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
+.print-sheet ol { margin: 0; padding-left: 1.6rem; }
+.print-sheet li { padding: 0.2rem 0; }
+.print-sheet .drives { color: var(--color-text-muted); }
+.print-actions { margin: 1rem 0; display: flex; gap: 0.75rem; }
+
+@media print {
+    nav, .no-print, .print-actions { display: none !important; }
+    .print-sheet { margin: 0; max-width: none; }
+    a { color: inherit; text-decoration: none; }
+}
