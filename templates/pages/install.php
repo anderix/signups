@@ -34,13 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="post" action="?page=install">
         <?= csrfField() ?>
         <label>Site name
-            <input type="text" name="site_name" placeholder="Troop 99 Sign-Ups" value="<?= htmlspecialchars($_POST['site_name'] ?? '') ?>" required>
+            <input type="text" name="site_name" placeholder="Troop Sign-Ups" value="<?= htmlspecialchars($_POST['site_name'] ?? '') ?>" required>
         </label>
         <label>Your name
-            <input type="text" name="display_name" placeholder="Jane Smith" value="<?= htmlspecialchars($_POST['display_name'] ?? '') ?>" required>
+            <input type="text" name="display_name" placeholder="John Smith" value="<?= htmlspecialchars($_POST['display_name'] ?? '') ?>" required>
         </label>
         <label>Username
-            <input type="text" name="username" placeholder="jane" value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" required>
+            <input type="text" name="username" placeholder="john" value="<?= htmlspecialchars($_POST['username'] ?? '') ?>" required>
         </label>
         <label>Password
             <input type="password" name="password" minlength="8" required>
