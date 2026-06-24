@@ -3,6 +3,11 @@
     Require all denied
 </FilesMatch>
 
+# Never serve a PHP error log (or any *.log) if one is ever written here.
+<FilesMatch "(^error_log$|\.log$)">
+    Require all denied
+</FilesMatch>
+
 RewriteEngine On
 
 # Application internals are reachable only through index.php. Unlike a public

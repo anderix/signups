@@ -10,6 +10,16 @@ require_once __DIR__ . '/src/auth.php';
 require_once __DIR__ . '/src/sheets.php';
 require_once __DIR__ . '/src/roster.php';
 
+// Security headers on every response, sent before any output. X-Frame-Options
+// stops the management UI being framed (clickjacking defence in depth — the
+// per-request CSRF token already blocks cross-origin POSTs); nosniff stops MIME
+// guessing; the referrer policy keeps our URLs — which carry ?page= and id= —
+// out of off-site Referer headers. We also drop PHP's version-leaking banner.
+header('X-Frame-Options: DENY');
+header('X-Content-Type-Options: nosniff');
+header('Referrer-Policy: same-origin');
+header_remove('X-Powered-By');
+
 $auth = new Auth();
 
 $flash = $_SESSION['flash'] ?? null;
