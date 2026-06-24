@@ -26,6 +26,24 @@ nav ul li a.active { font-weight: 700; text-decoration: underline; }
 nav .who-name { color: var(--color-nav-text); font-size: 0.9rem; opacity: 0.85; }
 .gate-toggle { position: fixed; top: 1rem; right: 1rem; z-index: var(--z-sticky); }
 
+/* On a phone, Axe's nav is one fixed-height row that horizontally scrolls —
+   cramped with brand + three sections + log out + toggle. Let it become two
+   rows instead: the brand gets its own line, then the sections sit at the left
+   of the next line with log out and the theme toggle pushed to the right. The
+   greeting is dropped — on your own phone you know who you are. */
+@media (max-width: 600px) {
+    nav ul {
+        height: auto;
+        flex-wrap: wrap;
+        overflow-x: visible;
+        padding: 0.4rem 0.6rem;
+        gap: 0.15rem;
+    }
+    nav ul li a { padding: 0.4rem 0.65rem; }
+    nav .nav-brand { flex: 1 0 100%; padding-left: 0.25rem; }
+    nav .who-name { display: none; }
+}
+
 /* --- Card surface (gates, new-sheet, add-user) --- */
 .card {
     background: var(--color-surface);
