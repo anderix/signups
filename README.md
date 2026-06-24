@@ -34,9 +34,9 @@ Permissions are flat on purpose: everyone with a login can run sheets, maintain 
 
 ## The roster
 
-The **Roster** screen holds two master lists — scouts and scouters — that every sheet's add-a-name box autocompletes from. Maintain it once and stop retyping the same thirty kids for every trip. Names are unique case-insensitively, so the same person can't sit in the roster twice as `Sam R` and `sam r`. Typing a fresh name directly on a sheet does *not* add it to the roster, so the roster stays a deliberate, clean list rather than collecting every guest and one-off.
+The **Roster** screen holds two master lists — scouts and scouters — that every sheet's add-a-name box autocompletes from. Maintain it once and stop retyping the same thirty kids for every trip. Names are unique case-insensitively, so the same person can't sit in the roster twice as `Jack R` and `jack r`. Typing a fresh name directly on a sheet does *not* add it to the roster, so the roster stays a deliberate, clean list rather than collecting every guest and one-off.
 
-By convention, scouts are listed as first name plus last initial (`Sam R`) and scouters as first initial plus last name (`S Rivera`); the screens remind you, but nothing enforces it — names are free text.
+By convention, scouts are listed as first name plus last initial (`Jack R`) and scouters as first initial plus last name (`S Rivera`); the screens remind you, but nothing enforces it — names are free text.
 
 ## Attribution
 

@@ -110,10 +110,10 @@ $users = $auth->listUsers();
         <?= csrfField() ?>
         <input type="hidden" name="action" value="add">
         <label>Name
-            <input type="text" name="display_name" placeholder="Kayla Smith" required>
+            <input type="text" name="display_name" placeholder="James Smith" required>
         </label>
         <label>Username
-            <input type="text" name="username" placeholder="kayla" required>
+            <input type="text" name="username" placeholder="james" required>
         </label>
         <button type="submit">Add user</button>
     </form>

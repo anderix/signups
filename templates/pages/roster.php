@@ -59,7 +59,7 @@ $scouters = rosterScouters();
             <input type="text" name="name" placeholder="Add a scout" required>
             <button type="submit">Add</button>
         </form>
-        <p class="hint">First name + last initial — e.g. <em>Sam R</em>.</p>
+        <p class="hint">First name + last initial — e.g. <em>Jack R</em>.</p>
     </section>
 
     <!-- ---------- Scouters roster ---------- -->

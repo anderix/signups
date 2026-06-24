@@ -104,7 +104,7 @@ foreach ($scouters as $a) { if ($a['is_driving']) $driverCount++; }
             <input type="text" name="name" list="roster-scouts" placeholder="Add a scout" autocomplete="off" required>
             <button type="submit">Add</button>
         </form>
-        <p class="hint no-print">First name + last initial — e.g. <em>Sam R</em>.</p>
+        <p class="hint no-print">First name + last initial — e.g. <em>Jack R</em>.</p>
     </section>
 
     <!-- ---------- Scouters ---------- -->
