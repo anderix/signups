@@ -47,15 +47,37 @@ class Auth {
             // local http dev still works), and SameSite=Lax as CSRF defence in
             // depth on top of the per-request token. The 30-day lifetime makes it
             // a persistent cookie so the login survives the browser closing.
-            session_set_cookie_params([
-                'lifetime' => self::SESSION_LIFETIME,
-                'path'     => '/',
-                'secure'   => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
-                'httponly' => true,
-                'samesite' => 'Lax',
-            ]);
+            session_set_cookie_params(
+                ['lifetime' => self::SESSION_LIFETIME] + $this->cookieParams()
+            );
             session_start();
+
+            // Rolling expiry: PHP emits the session cookie only when the session
+            // is created, so a fixed cookie would still log an active user out 30
+            // days after they first signed in. Re-issue it on each authenticated
+            // request so the 30 days counts from last activity instead. The
+            // server-side session file already rolls — its timestamp updates on
+            // every write — so this just keeps the cookie in step.
+            if ($this->isLoggedIn()) {
+                setcookie(
+                    session_name(),
+                    session_id(),
+                    ['expires' => time() + self::SESSION_LIFETIME] + $this->cookieParams()
+                );
+            }
         }
+    }
+
+    // Shared cookie attributes for the initial session cookie and the rolling
+    // refresh; the two differ only in how they express the lifetime (a duration
+    // for session_set_cookie_params, an absolute expiry for setcookie).
+    private function cookieParams(): array {
+        return [
+            'path'     => '/',
+            'secure'   => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ];
     }
 
     public function login(string $username, string $password): bool {
