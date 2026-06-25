@@ -13,6 +13,20 @@ function cleanName(string $name): string {
     return $capped ?? substr($name, 0, 80);
 }
 
+// Order people the way a sign-up sheet should read: by surname, then given name.
+// Both list conventions put the surname token last — scouts are "first name +
+// last initial" (Jack R) and scouters "first initial + last name" (S Rivera) —
+// so in either list the final whitespace-separated token is the surname (full or
+// just an initial) and the first token is the given name. We compare on
+// (surname, given), assuming the convention is followed. strcasecmp keeps it
+// ASCII-case-insensitive — matching the roster's NOCASE index and needing no
+// mbstring. A usort comparator: pass it straight to usort($rows, 'compareByName').
+function compareByName(array $a, array $b): int {
+    $pa = preg_split('/\s+/u', $a['name']) ?: [$a['name']];
+    $pb = preg_split('/\s+/u', $b['name']) ?: [$b['name']];
+    return strcasecmp(end($pa), end($pb)) ?: strcasecmp($pa[0], $pb[0]);
+}
+
 function listSheets(): array {
     // Newest first, with per-sheet counts so the list page needs no extra
     // queries. The driver tally answers the question that actually matters at
@@ -52,15 +66,19 @@ function deleteSheet(int $id): void {
 }
 
 function sheetScouts(int $sheetId): array {
-    $stmt = getDb()->prepare('SELECT * FROM scouts WHERE sheet_id = ? ORDER BY id');
+    $stmt = getDb()->prepare('SELECT * FROM scouts WHERE sheet_id = ?');
     $stmt->execute([$sheetId]);
-    return $stmt->fetchAll();
+    $rows = $stmt->fetchAll();
+    usort($rows, 'compareByName');
+    return $rows;
 }
 
 function sheetScouters(int $sheetId): array {
-    $stmt = getDb()->prepare('SELECT * FROM scouters WHERE sheet_id = ? ORDER BY id');
+    $stmt = getDb()->prepare('SELECT * FROM scouters WHERE sheet_id = ?');
     $stmt->execute([$sheetId]);
-    return $stmt->fetchAll();
+    $rows = $stmt->fetchAll();
+    usort($rows, 'compareByName');
+    return $rows;
 }
 
 function addScout(int $sheetId, string $name): void {

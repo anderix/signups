@@ -24,15 +24,21 @@ $siteName = getSetting('site_name', 'Sign-Ups');
 <body>
 <?php if (!$bare && $auth->isLoggedIn()): ?>
 <nav>
+    <!-- The checkbox is the no-JS hamburger toggle (see signups.css). On a phone
+         the four links collapse behind it; on desktop they sit inline and the
+         burger is hidden. Navigating reloads the page, so a tapped link resets
+         the toggle and closes the menu on its own. -->
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation menu">
     <ul>
-        <li><a class="nav-brand" href="?page=sheets"><?= htmlspecialchars($siteName) ?></a></li>
-        <li><a href="?page=sheets" class="<?= in_array($currentPage, ['sheets', 'sheet'], true) ? 'active' : '' ?>">Sheets</a></li>
-        <li><a href="?page=roster" class="<?= $currentPage === 'roster' ? 'active' : '' ?>">Roster</a></li>
-        <li><a href="?page=users" class="<?= $currentPage === 'users' ? 'active' : '' ?>">Users</a></li>
-        <li class="nav-right">
+        <li class="nav-brand-li"><a class="nav-brand" href="?page=sheets"><?= htmlspecialchars($siteName) ?></a></li>
+        <li class="nav-menu-item"><a href="?page=sheets" class="<?= in_array($currentPage, ['sheets', 'sheet'], true) ? 'active' : '' ?>">Sheets</a></li>
+        <li class="nav-menu-item"><a href="?page=roster" class="<?= $currentPage === 'roster' ? 'active' : '' ?>">Roster</a></li>
+        <li class="nav-menu-item"><a href="?page=users" class="<?= $currentPage === 'users' ? 'active' : '' ?>">Users</a></li>
+        <li class="nav-menu-item"><a href="?page=logout">Log out</a></li>
+        <li class="nav-meta">
             <span class="who-name"><?= htmlspecialchars($auth->currentUser()['display_name']) ?></span>
-            <a href="?page=logout">Log out</a>
             <button class="theme-toggle" aria-label="Toggle light or dark theme"></button>
+            <label for="nav-toggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
         </li>
     </ul>
 </nav>

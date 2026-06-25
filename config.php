@@ -19,3 +19,10 @@ define('WEB_BASE', '/signups');
 define('APP_ROOT', __DIR__);
 define('DB_PATH', APP_ROOT . '/db/signups.db');
 define('SCHEMA_PATH', APP_ROOT . '/db/schema.sql');
+
+// Server-side session files live in this private directory rather than the
+// host's shared session location, so a leader's 30-day login can't be expired
+// early by a shared-host cleanup cron (see src/auth.php). It sits under db/,
+// which .htaccess denies and deploys exclude, so the files are never web-served
+// or wiped.
+define('SESSION_PATH', APP_ROOT . '/db/sessions');

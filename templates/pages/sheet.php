@@ -45,8 +45,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $scouts = sheetScouts($sheetId);
 $scouters = sheetScouters($sheetId);
-$scoutRoster = rosterScoutNames();
-$scouterRoster = rosterScouterNames();
+
+// Suggest only roster names not already on this sheet — once someone's added,
+// there's no reason to offer them again. Case-insensitive via ASCII strtolower,
+// matching the roster's NOCASE index (no mbstring), so a "Jack R" already on the
+// sheet hides the roster's "Jack R". Filtering here means the no-JS <datalist>
+// fallback and the type-ahead (which reads from it) both stay in step.
+$scoutsOnSheet = array_map(fn($c) => strtolower($c['name']), $scouts);
+$scoutRoster = array_values(array_filter(
+    rosterScoutNames(),
+    fn($n) => !in_array(strtolower($n), $scoutsOnSheet, true)
+));
+$scoutersOnSheet = array_map(fn($a) => strtolower($a['name']), $scouters);
+$scouterRoster = array_values(array_filter(
+    rosterScouterNames(),
+    fn($n) => !in_array(strtolower($n), $scoutersOnSheet, true)
+));
+
 $driverCount = 0;
 foreach ($scouters as $a) { if ($a['is_driving']) $driverCount++; }
 ?>
@@ -155,3 +170,7 @@ foreach ($scouters as $a) { if ($a['is_driving']) $driverCount++; }
 <datalist id="roster-scouters">
     <?php foreach ($scouterRoster as $n): ?><option value="<?= htmlspecialchars($n) ?>"></option><?php endforeach; ?>
 </datalist>
+
+<!-- Roster autocomplete that works on iOS, where the native <datalist> above
+     doesn't. Progressive enhancement: with no JS, the <datalist> still works. -->
+<script src="public/js/typeahead.js?v=<?= @filemtime(APP_ROOT . '/public/js/typeahead.js') ?>"></script>

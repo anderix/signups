@@ -2,12 +2,19 @@
 // Roster model. The two shared master lists you pick names from on every sheet.
 // Kept separate from any one sheet so a name typed once is offered everywhere.
 
+// Ordered by surname then given name (see compareByName in sheets.php), so the
+// roster reads the same way as the lists it feeds and the autocomplete offers
+// names in a predictable order.
 function rosterScouts(): array {
-    return getDb()->query('SELECT * FROM roster_scouts ORDER BY name COLLATE NOCASE')->fetchAll();
+    $rows = getDb()->query('SELECT * FROM roster_scouts')->fetchAll();
+    usort($rows, 'compareByName');
+    return $rows;
 }
 
 function rosterScouters(): array {
-    return getDb()->query('SELECT * FROM roster_scouters ORDER BY name COLLATE NOCASE')->fetchAll();
+    $rows = getDb()->query('SELECT * FROM roster_scouters')->fetchAll();
+    usort($rows, 'compareByName');
+    return $rows;
 }
 
 // INSERT OR IGNORE leans on the case-insensitive UNIQUE index: re-adding an

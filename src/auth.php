@@ -15,15 +15,40 @@ class Auth {
     // submitted username does not exist. No password produces it.
     private const DUMMY_HASH = '$2y$12$HQnqDB63nPxoM15unoh.uOhhRmXbAig9uAI9l.F8BN9d.JuqJQAny';
 
+    // How long a sign-in lasts: 30 days from login, so leaders aren't asked to
+    // log in again between outings.
+    private const SESSION_LIFETIME = 30 * 24 * 60 * 60;
+
     public function __construct() {
         if (session_status() === PHP_SESSION_NONE) {
+            // Keep sessions in the app's own directory instead of the shared
+            // host location. On this cPanel host a system cron prunes the
+            // default session dir on PHP's *global* gc_maxlifetime (~24 min) and
+            // ignores a per-request ini_set — which would log everyone out long
+            // before 30 days. A private save_path is touched only by PHP's own
+            // GC, which does honour the lifetime set below. Falls back to the
+            // default path if the directory can't be made writable, so a hosting
+            // quirk degrades to short sessions rather than no login at all.
+            if (!is_dir(SESSION_PATH)) {
+                @mkdir(SESSION_PATH, 0700, true);
+            }
+            if (is_dir(SESSION_PATH) && is_writable(SESSION_PATH)) {
+                session_save_path(SESSION_PATH);
+                ini_set('session.gc_maxlifetime', (string) self::SESSION_LIFETIME);
+                // Re-enable PHP's own probabilistic GC so this private dir still
+                // gets the occasional sweep of sessions past their 30 days.
+                ini_set('session.gc_probability', '1');
+                ini_set('session.gc_divisor', '100');
+            }
+
             // Harden the session cookie before it is issued: never readable from
             // JavaScript, Secure whenever the request arrived over HTTPS (so a
             // production deploy can't silently leak it over plain HTTP, while
             // local http dev still works), and SameSite=Lax as CSRF defence in
-            // depth on top of the per-request token.
+            // depth on top of the per-request token. The 30-day lifetime makes it
+            // a persistent cookie so the login survives the browser closing.
             session_set_cookie_params([
-                'lifetime' => 0,
+                'lifetime' => self::SESSION_LIFETIME,
                 'path'     => '/',
                 'secure'   => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
                 'httponly' => true,

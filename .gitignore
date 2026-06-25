@@ -2,3 +2,6 @@
 db/*.db
 db/*.db-wal
 db/*.db-shm
+
+# Server-side session files (src/auth.php) — per-install runtime state.
+db/sessions/
