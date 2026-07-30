@@ -2,7 +2,7 @@
 
 A drop-in sign-up sheet for outings, built to be simpler than the systems that usually replace paper. A sheet has a name and two lists — Scouts and Scouters — with a driving checkbox for the adults. The people running sign-ups have logins; the kids and adults *on* a sheet do not. That one decision is the whole point: nobody needs an account to be signed up, so the paper sheet's "just write the name down" feel survives the move to a screen.
 
-It is the same "drop a folder on the site and point it at [Axe](https://github.com/anderix/axe)" shape as [xcribe](https://github.com/anderix/xcribe) and [browse](https://github.com/anderix/browse), and it borrows xcribe's login. The difference is that **everything here is behind the login** — a sign-up sheet lists minors, so there are no public pages at all.
+It is the same "drop a folder on the site and point it at [Axe](https://github.com/excelano/axe)" shape as [xcribe](https://github.com/anderix/xcribe) and [browse](https://github.com/anderix/browse), and it borrows xcribe's login. The difference is that **everything here is behind the login** — a sign-up sheet lists minors, so there are no public pages at all.
 
 Nothing in the code is troop-specific; it ships generic and can run for any group that signs people up for trips.
 
