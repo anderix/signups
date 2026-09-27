@@ -40,4 +40,4 @@ By convention, scouts are listed as first name plus last initial (`Jack R`) and 
 
 ## Attribution
 
-Author: David M. Anderson. Built with AI assistance (Claude, Anthropic).
+Author: David M. Anderson.
