@@ -27,6 +27,6 @@ signups is built from source and self-hosted by each operator. Security fixes sh
 A few things only the deployer can do, and signups cannot enforce them for you:
 
 - **Serve over HTTPS.** Passwords and session cookies cross the wire on every sign-in, and the sheets themselves name minors.
-- **Protect the internals.** The bundled `.htaccess` denies web access to `src/`, `templates/`, `db/`, and `config.php`, and refuses to serve any `*.db` file. This relies on Apache honoring `.htaccess`. On nginx or other servers, deny those paths in your server configuration — the SQLite database holds every password hash and every name, and must never be web-readable.
+- **Protect the internals.** The bundled `.htaccess` denies web access to `src/`, `templates/`, `db/`, `config.php` and `config.local.php`, and refuses to serve any `*.db` file. This relies on Apache honoring `.htaccess`. On nginx or other servers, deny those paths in your server configuration — the SQLite database holds every password hash and every name, and must never be web-readable. Where the host allows it, keep the database outside the web root altogether by defining `DATA_DIR` in a `config.local.php` beside `config.php`.
 - **Keep users few and trusted.** All users can manage all data and each other; there is no rate limiting on login, so put signups behind your host's protections if it faces the open internet.
 - **Hand off temporary passwords out of band.** Read the one-time password to the new user directly; it is shown in the browser only once and is never emailed.

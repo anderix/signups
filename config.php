@@ -1,4 +1,8 @@
 <?php
+// config.php
+// Author: David M. Anderson
+// Built with AI assistance (Claude, Anthropic)
+//
 // signups configuration — the one file you edit per install.
 //
 // signups is a drop-in sign-up sheet: plant this directory beside your static
@@ -17,12 +21,18 @@ define('WEB_BASE', '/signups');
 
 // Filesystem locations. You normally do not need to change these.
 define('APP_ROOT', __DIR__);
-define('DB_PATH', APP_ROOT . '/db/signups.db');
 define('SCHEMA_PATH', APP_ROOT . '/db/schema.sql');
+
+// The database and session files live in DATA_DIR. It defaults to db/, which
+// .htaccess denies. To keep them outside the web root, define DATA_DIR in a
+// config.local.php beside this file; deploys must leave that file in place.
+if (is_file(APP_ROOT . '/config.local.php')) {
+    require APP_ROOT . '/config.local.php';
+}
+defined('DATA_DIR') || define('DATA_DIR', APP_ROOT . '/db');
+define('DB_PATH', DATA_DIR . '/signups.db');
 
 // Server-side session files live in this private directory rather than the
 // host's shared session location, so a leader's 30-day login can't be expired
-// early by a shared-host cleanup cron (see src/auth.php). It sits under db/,
-// which .htaccess denies and deploys exclude, so the files are never web-served
-// or wiped.
-define('SESSION_PATH', APP_ROOT . '/db/sessions');
+// early by a shared-host cleanup cron (see src/auth.php).
+define('SESSION_PATH', DATA_DIR . '/sessions');

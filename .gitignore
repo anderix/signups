@@ -5,3 +5,6 @@ db/*.db-shm
 
 # Server-side session files (src/auth.php) — per-install runtime state.
 db/sessions/
+
+# Per-install override of DATA_DIR (config.php).
+config.local.php

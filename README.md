@@ -15,7 +15,7 @@ config.php           The one file you edit: where signups lives on the site.
 index.php            Front controller; ?page= selects a screen.
 src/                 db, auth (local password, bcrypt), and the sheet + roster models.
 templates/           Login, setup, the sheet list, a single sheet, roster, users, print.
-db/                  SQLite: users, sheets, the two lists per sheet, and the rosters.
+db/                  The schema, and by default the SQLite database and session files.
 public/css/          The styling layered over Axe.
 ```
 
